@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction to Computer Networks</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Solarized Light Theme */
+        :root {
+            --bg-primary: #fdf6e3; /* base3 */
+            --bg-secondary: #eee8d5; /* base2 */
+            --text-primary: #657b83; /* base00 */
+            --text-secondary: #586e75; /* base01 */
+            --text-accent: #073642; /* base02 */
+            --highlight: #b58900; /* yellow */
+            --link-color: #268bd2; /* blue */
+            --header-bg: #f5f5f5;
+            --border-color: #93a1a1; /* base1 */
+        }
+
+        /* Solarized Dark Theme */
+        .dark-mode {
+            --bg-primary: #002b36; /* base03 */
+            --bg-secondary: #073642; /* base02 */
+            --text-primary: #839496; /* base0 */
+            --text-secondary: #93a1a1; /* base1 */
+            --text-accent: #eee8d5; /* base2 */
+            --highlight: #b58900; /* yellow */
+            --link-color: #268bd2; /* blue */
+            --header-bg: #0a3f4e;
+            --border-color: #586e75; /* base01 */
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--text-accent);
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .header {
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        
+        .nav-link {
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s;
+        }
+        
+        .nav-link:hover {
+             background-color: var(--bg-primary);
+        }
+
+        .nav-link.active {
+            background-color: var(--link-color);
+            color: var(--bg-primary);
+            font-weight: 600;
+        }
+
+        .control-btn {
+            background-color: var(--bg-primary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .control-btn:hover {
+             background-color: var(--bg-secondary);
+             border-color: var(--text-accent);
+        }
+        
+        .collapsible-header {
+            cursor: pointer;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            transition: background-color 0.2s;
+        }
+
+        .collapsible-header:hover {
+            background-color: var(--bg-primary);
+        }
+
+        .collapsible-content {
+            border: 1px solid var(--border-color);
+            border-top: none;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+            padding: 0 1.5rem;
+        }
+
+        .collapsible-content.expanded {
+            max-height: 10000px; /* Large value to allow for content */
+            padding: 1.5rem;
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+        
+        .modal-content {
+             background-color: var(--bg-primary);
+             padding: 2rem;
+             border-radius: 0.75rem;
+             width: 90%;
+             max-width: 500px;
+        }
+        
+        .styled-input, .styled-textarea {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 0.5rem;
+        }
+        
+        .styled-input:focus, .styled-textarea:focus {
+            outline: none;
+            border-color: var(--link-color);
+            box-shadow: 0 0 0 2px rgba(38, 139, 210, 0.3);
+        }
+        
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .styled-table th, .styled-table td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        .styled-table th {
+            background-color: var(--bg-secondary);
+            color: var(--text-accent);
+        }
+
+        .import-btn {
+            background-color: var(--link-color);
+            color: var(--bg-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .import-btn:hover {
+            background-color: #1a6a9e; /* Darker blue */
+        }
+
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="p-4 md:p-8">
+
+    <!-- Header -->
+    <header class="header p-4 rounded-lg shadow-md mb-8">
+        <div class="container mx-auto flex justify-between items-center flex-wrap">
+            <h1 class="text-xl md:text-2xl font-bold text-accent">Introduction to Computer Networks</h1>
+            <div class="flex items-center space-x-2 mt-4 md:mt-0">
+                <button id="expandAll" class="control-btn px-3 py-2 rounded-md text-sm font-semibold">Expand All</button>
+                <button id="collapseAll" class="control-btn px-3 py-2 rounded-md text-sm font-semibold">Collapse All</button>
+                <button id="theme-toggle" class="control-btn p-2 rounded-md">
+                    <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.706-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 14.95a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414l-.707.707zm-2.121-3.536a1 1 0 011.414 0l.707.707a1 1 0 11-1.414 1.414l-.707-.707a1 1 0 010-1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z"/></svg>
+                    <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" viewBox="0 0 20 20" fill="currentColor"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" /></svg>
+                </button>
+            </div>
+        </div>
+        <nav class="container mx-auto mt-4">
+            <ul class="flex flex-wrap gap-2 justify-center md:justify-start">
+                <li><a href="#lecture" class="nav-link active">Lecture</a></li>
+                <li><a href="#exercises" class="nav-link">Exercises</a></li>
+                <li><a href="#tips" class="nav-link">Tips</a></li>
+                <li><a href="#explanations" class="nav-link">Explanations</a></li>
+                <li><a href="#answers" class="nav-link">Answers</a></li>
+                <li><a href="#evaluation" class="nav-link">Evaluation Grid</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container mx-auto">
+        <!-- Lecture Section -->
+        <section id="lecture" class="main-content">
+            <h2 class="text-3xl font-bold mb-6">Lecture Content</h2>
+            <div class="space-y-4">
+                <!-- Chapter 1 -->
+                <div class="collapsible">
+                    <div class="collapsible-header p-4 rounded-t-lg flex justify-between items-center">
+                        <h3 class="text-xl font-semibold">Chapter 1: Communication in a Connected World</h3>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </div>
+                    <div class="collapsible-content rounded-b-lg">
+                        <div class="space-y-4">
+                           <p><strong>Welcome!</strong> In today's hyper-connected world, understanding the fundamentals of networking is essential knowledge for everyone. This lecture is for absolute beginners, using simple, real-world examples to illustrate how data travels.</p>
+                           
+                           <h4 class="text-lg font-semibold mt-4">1.1 Network Types</h4>
+                           <p>A "network" is two or more connected devices sharing resources. Your home Wi-Fi is a small network; the Internet is a global network of networks. Even a smart coffee maker uses local (Wi-Fi) and global (Internet) networks to brew your coffee from a command on your phone.</p>
+                           
+                           <h5 class="font-semibold">Who Owns “The Internet”?</h5>
+                           <p>No one and everyone. It's a decentralized system. Organizations like the <a href="https://www.internetsociety.org/" target="_blank" rel="noopener noreferrer">Internet Society (ISOC)</a>, <a href="https://www.ietf.org/" target="_blank" rel="noopener noreferrer">Internet Engineering Task Force (IETF)</a>, and <a href="https://www.icann.org/" target="_blank" rel="noopener noreferrer">ICANN</a> help manage its standards and coordination, like agreeing on a common language for an international meeting.</p>
+                           
+                           <h5 class="font-semibold">Local Networks & Topologies</h5>
+                           <p>A <strong>Local Area Network (LAN)</strong> connects devices in one location, like a home or office. The arrangement of these devices is called a topology. Most modern LANs use a <strong>star topology</strong>, where all devices connect to a central router or switch.</p>
+                           
+                           <!-- SVG for Topologies -->
+                           <div class="my-4 p-4 border border-[var(--border-color)] rounded-lg text-center">
+                                <h4 class="font-bold mb-2">Network Topologies</h4>
+                                <div class="flex flex-wrap justify-around items-center gap-4">
+                                     <div class="flex-1 min-w-[250px]">
+                                        <p class="font-semibold">Star Topology (Modern)</p>
+                                        <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" class="inline-block" aria-labelledby="star-title">
+                                            <title id="star-title">Star Topology Diagram</title>
+                                            <circle cx="100" cy="75" r="15" fill="#268bd2"/>
+                                            <text x="100" y="79" font-size="8" fill="white" text-anchor="middle">Router</text>
+                                            <circle cx="30" cy="30" r="10" fill="#6c71c4"/> <line x1="100" y1="75" x2="30" y2="30" stroke="#839496" stroke-width="2"/>
+                                            <circle cx="170" cy="30" r="10" fill="#6c71c4"/> <line x1="100" y1="75" x2="170" y2="30" stroke="#839496" stroke-width="2"/>
+                                            <circle cx="30" cy="120" r="10" fill="#6c71c4"/> <line x1="100" y1="75" x2="30" y2="120" stroke="#839496" stroke-width="2"/>
+                                            <circle cx="170" cy="120" r="10" fill="#6c71c4"/> <line x1="100" y1="75" x2="170" y2="120" stroke="#839496" stroke-width="2"/>
+                                            <circle cx="100" cy="15" r="10" fill="#6c71c4"/> <line x1="100" y1="75" x2="100" y2="15" stroke="#839496" stroke-width="2"/>
+                                        </svg>
+                                        <p class="text-sm">All devices connect to a central hub. Reliable and easy to manage.</p>
+                                     </div>
+                                     <div class="flex-1 min-w-[250px]">
+                                        <p class="font-semibold">Bus Topology (Legacy)</p>
+                                         <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" class="inline-block" aria-labelledby="bus-title">
+                                            <title id="bus-title">Bus Topology Diagram</title>
+                                            <line x1="10" y1="75" x2="190" y2="75" stroke="#d33682" stroke-width="4"/>
+                                            <line x1="30" y1="75" x2="30" y2="45" stroke="#839496" stroke-width="2"/><circle cx="30" cy="40" r="8" fill="#6c71c4"/>
+                                            <line x1="70" y1="75" x2="70" y2="45" stroke="#839496" stroke-width="2"/><circle cx="70" cy="40" r="8" fill="#6c71c4"/>
+                                            <line x1="110" y1="75" x2="110" y2="45" stroke="#839496" stroke-width="2"/><circle cx="110" cy="40" r="8" fill="#6c71c4"/>
+                                            <line x1="150" y1="75" x2="150" y2="45" stroke="#839496" stroke-width="2"/><circle cx="150" cy="40" r="8" fill="#6c71c4"/>
+                                         </svg>
+                                        <p class="text-sm">All devices share a single cable. A break in the cable disrupts the whole network.</p>
+                                     </div>
+                                </div>
+                           </div>
+
+                           <h4 class="text-lg font-semibold mt-4">1.2 Data Transmission</h4>
+                           <p>All data is transmitted as <strong>bits</strong> (0s and 1s). These are sent as signals: <strong>electrical pulses</strong> in Ethernet cables, <strong>light pulses</strong> in fiber optics, or <strong>radio waves</strong> for Wi-Fi and cellular.</p>
+                           
+                           <h4 class="text-lg font-semibold mt-4">1.3 Bandwidth and Throughput</h4>
+                           <p><strong>Bandwidth</strong> is the maximum theoretical speed (like the number of lanes on a highway). <strong>Throughput</strong> is the actual measured speed (like traffic flow during rush hour), which is almost always lower due to congestion and other factors.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chapter 2 -->
+                <div class="collapsible">
+                    <div class="collapsible-header p-4 rounded-t-lg flex justify-between items-center">
+                        <h3 class="text-xl font-semibold">Chapter 2: Network Components, Types, and Connections</h3>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </div>
+                    <div class="collapsible-content rounded-b-lg">
+                       <div class="space-y-4">
+                            <h4 class="text-lg font-semibold mt-4">2.1 Clients and Servers</h4>
+                            <p>In a <strong>Client-Server</strong> model, a <strong>client</strong> (your laptop) requests services from a <strong>server</strong> (a website's computer). In a <strong>Peer-to-Peer (P2P)</strong> network, every device is equal and can act as both a client and a server, like a study group where everyone shares notes.</p>
+                            <!-- SVG for Client-Server vs P2P -->
+                            <div class="my-4 p-4 border border-[var(--border-color)] rounded-lg text-center">
+                                <h4 class="font-bold mb-2">Network Models</h4>
+                                <div class="flex flex-wrap justify-around items-center gap-4">
+                                     <div class="flex-1 min-w-[250px]">
+                                        <p class="font-semibold">Client-Server Model</p>
+                                        <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" aria-labelledby="cs-title">
+                                            <title id="cs-title">Client-Server Diagram</title>
+                                            <rect x="75" y="20" width="50" height="30" rx="5" fill="#b58900"/>
+                                            <text x="100" y="38" font-size="10" fill="white" text-anchor="middle">Server</text>
+                                            <circle cx="30" cy="110" r="12" fill="#2aa198"/> <text x="30" y="114" font-size="8" fill="white" text-anchor="middle">Client</text>
+                                            <circle cx="100" cy="110" r="12" fill="#2aa198"/> <text x="100" y="114" font-size="8" fill="white" text-anchor="middle">Client</text>
+                                            <circle cx="170" cy="110" r="12" fill="#2aa198"/> <text x="170" y="114" font-size="8" fill="white" text-anchor="middle">Client</text>
+                                            <path d="M 35 100 Q 60 70, 95 50" stroke="#839496" stroke-width="2" fill="none" stroke-dasharray="4 2"/>
+                                            <path d="M 100 100 Q 100 70, 100 50" stroke="#839496" stroke-width="2" fill="none" stroke-dasharray="4 2"/>
+                                            <path d="M 165 100 Q 140 70, 105 50" stroke="#839496" stroke-width="2" fill="none" stroke-dasharray="4 2"/>
+                                            <text x="65" y="70" font-size="10" fill="var(--text-primary)">Requests →</text>
+                                        </svg>
+                                     </div>
+                                     <div class="flex-1 min-w-[250px]">
+                                        <p class="font-semibold">Peer-to-Peer (P2P) Model</p>
+                                        <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" aria-labelledby="p2p-title">
+                                           <title id="p2p-title">Peer-to-Peer Diagram</title>
+                                           <circle cx="100" cy="30" r="12" fill="#cb4b16"/><text x="100" y="34" font-size="8" fill="white" text-anchor="middle">Peer</text>
+                                           <circle cx="40" cy="110" r="12" fill="#cb4b16"/><text x="40" y="114" font-size="8" fill="white" text-anchor="middle">Peer</text>
+                                           <circle cx="160" cy="110" r="12" fill="#cb4b16"/><text x="160" y="114" font-size="8" fill="white" text-anchor="middle">Peer</text>
+                                           <path d="M 95 40 L 45 100" stroke="#839496" stroke-width="2" fill="none" stroke-dasharray="4 2" />
+                                           <path d="M 105 40 L 155 100" stroke="#839496" stroke-width="2" fill="none" stroke-dasharray="4 2" />
+                                           <path d="M 52 110 H 148" stroke="#839496" stroke-width="2" fill="none" stroke-dasharray="4 2" />
+                                        </svg>
+                                     </div>
+                                </div>
+                            </div>
+                           
+                            <h4 class="text-lg font-semibold mt-4">2.2 Network Components</h4>
+                            <p>Networks use <strong>End Devices</strong> (computers, phones), <strong>Intermediary Devices</strong> (routers, switches), and <strong>Network Media</strong> (cables, radio waves).</p>
+                            <ul>
+                                <li><strong>Switches:</strong> Connect devices on the same LAN efficiently.</li>
+                                <li><strong>Routers:</strong> Connect different networks together (e.g., your home to the internet).</li>
+                                <li><strong>Wireless Access Points (WAP):</strong> Allow wireless devices to connect.</li>
+                            </ul>
+                            
+                            <h4 class="text-lg font-semibold mt-4">2.3 ISP Connectivity Options</h4>
+                            <p>An <strong>Internet Service Provider (ISP)</strong> provides internet access via technologies like <strong>Cable</strong>, <strong>DSL</strong> (telephone lines), <strong>Fiber Optic</strong> (fastest), <strong>Satellite</strong> (for remote areas), and <strong>Cellular</strong>.</p>
+                       </div>
+                    </div>
+                </div>
+
+                <!-- Chapter 3 -->
+                <div class="collapsible">
+                    <div class="collapsible-header p-4 rounded-t-lg flex justify-between items-center">
+                        <h3 class="text-xl font-semibold">Chapter 3: Wireless and Mobile Networks</h3>
+                         <span class="transform transition-transform duration-300">▼</span>
+                    </div>
+                    <div class="collapsible-content rounded-b-lg">
+                        <div class="space-y-4">
+                            <h4 class="text-lg font-semibold mt-4">3.1 Wireless Networks</h4>
+                            <p>Wireless networks use radio waves. Main types:</p>
+                            <ul>
+                                <li><strong>WPAN (Bluetooth):</strong> Very short range (e.g., headphones to phone).</li>
+                                <li><strong>WLAN (Wi-Fi):</strong> Medium range (home, office). Modern standards include <strong>Wi-Fi 6 (802.11ax)</strong>, which is great for many devices.</li>
+                                <li><strong>WWAN (Cellular):</strong> Long range (4G, 5G).</li>
+                            </ul>
+                            
+                            <h4 class="text-lg font-semibold mt-4">3.2 Mobile Device Connectivity</h4>
+                            <p>Mobile devices prefer Wi-Fi to save cellular data. <strong>Bluetooth pairing</strong> is the secure process of connecting two Bluetooth devices for the first time.</p>
+                            
+                            <h4 class="text-lg font-semibold mt-4">3.3 Introduction to Network Security</h4>
+                            <p>Protecting your connection is crucial.</p>
+                            <ul>
+                                <li><strong>SSID:</strong> The public name of a Wi-Fi network.</li>
+                                <li><strong>Authentication & Encryption:</strong> A password (authentication) and scrambling data (encryption) protect your Wi-Fi. Use <strong>WPA2</strong> or <strong>WPA3</strong> security.</li>
+                                <li><strong>Firewalls:</strong> A digital security guard for your network, blocking malicious traffic. Your router has one built-in.</li>
+                            </ul>
+                             <!-- SVG for Firewall -->
+                            <div class="my-4 p-4 border border-[var(--border-color)] rounded-lg text-center">
+                                <h4 class="font-bold mb-2">How a Firewall Works</h4>
+                                <svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg" aria-labelledby="fw-title">
+                                    <title id="fw-title">Firewall Diagram</title>
+                                    <text x="45" y="20" font-size="12" fill="var(--text-primary)" text-anchor="middle">Internet (Untrusted)</text>
+                                    <text x="250" y="20" font-size="12" fill="var(--text-primary)" text-anchor="middle">Your Network (Trusted)</text>
+                                    
+                                    <!-- Malicious Traffic -->
+                                    <path d="M 20 50 H 120" stroke="#dc322f" stroke-width="2" marker-end="url(#arrow-red)"/>
+                                    <text x="70" y="45" font-size="10" fill="#dc322f" text-anchor="middle">Malicious</text>
+                                    <text x="148" y="55" font-size="20" fill="#dc322f">✕</text>
+                                    
+                                    <!-- Safe Traffic -->
+                                    <path d="M 20 100 H 280" stroke="#859900" stroke-width="2" marker-end="url(#arrow-green)"/>
+                                    <text x="70" y="95" font-size="10" fill="#859900" text-anchor="middle">Safe</text>
+                                     <text x="148" y="105" font-size="20" fill="#859900">✔</text>
+                                    
+                                    <!-- Firewall Wall -->
+                                    <rect x="140" y="30" width="15" height="100" fill="#b58900"/>
+                                    <path d="M 140 40 H 155 M 140 50 H 155 M 140 60 H 155 M 140 70 H 155 M 140 80 H 155 M 140 90 H 155 M 140 100 H 155 M 140 110 H 155 M 140 120 H 155" stroke="#002b36" stroke-width="1"/>
+                                    <text x="147.5" y="80" font-size="10" fill="white" text-anchor="middle" transform="rotate(-90 147.5 80)">FIREWALL</text>
+                                    
+                                    <defs>
+                                        <marker id="arrow-red" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#dc322f"/></marker>
+                                        <marker id="arrow-green" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#859900"/></marker>
+                                    </defs>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Exercises Section -->
+        <section id="exercises" class="main-content hidden">
+            <h2 class="text-3xl font-bold mb-6">Exercises</h2>
+            <div class="space-y-4">
+                 <div class="collapsible">
+                    <div class="collapsible-header p-4 rounded-t-lg flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">Exercise 1: Network Arrangement</h3>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </div>
+                    <div class="collapsible-content rounded-b-lg">
+                        <p class="font-semibold mb-2">What is the arrangement or "map" of devices in a network called?</p>
+                        <textarea class="styled-textarea w-full p-2" rows="3" placeholder="Type your answer here..."></textarea>
+                        <div class="mt-2 flex items-center gap-2">
+                             <label class="import-btn text-sm">
+                                Import File
+                                <input type="file" class="hidden file-input">
+                            </label>
+                            <span class="file-name text-sm text-[var(--text-secondary)]"></span>
+                        </div>
+                    </div>
+                </div>
+                 <div class="collapsible">
+                    <div class="collapsible-header p-4 rounded-t-lg flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">Exercise 2: LAN Acronym</h3>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </div>
+                    <div class="collapsible-content rounded-b-lg">
+                        <p class="font-semibold mb-2">What does the acronym LAN stand for?</p>
+                        <textarea class="styled-textarea w-full p-2" rows="3" placeholder="Type your answer here..."></textarea>
+                         <div class="mt-2 flex items-center gap-2">
+                             <label class="import-btn text-sm">
+                                Import File
+                                <input type="file" class="hidden file-input">
+                            </label>
+                            <span class="file-name text-sm text-[var(--text-secondary)]"></span>
+                        </div>
+                    </div>
+                </div>
+                 <div class="collapsible">
+                    <div class="collapsible-header p-4 rounded-t-lg flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">Exercise 3: Internet Ownership</h3>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </div>
+                    <div class="collapsible-content rounded-b-lg">
+                        <p class="font-semibold mb-2">Is the Internet owned by a single global corporation? (Yes/No)</p>
+                        <textarea class="styled-textarea w-full p-2" rows="3" placeholder="Type your answer here..."></textarea>
+                        <div class="mt-2 flex items-center gap-2">
+                             <label class="import-btn text-sm">
+                                Import File
+                                <input type="file" class="hidden file-input">
+                            </label>
+                            <span class="file-name text-sm text-[var(--text-secondary)]"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="collapsible">
+                    <div class="collapsible-header p-4 rounded-t-lg flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">Exercise 4: Client-Server Model</h3>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </div>
+                    <div class="collapsible-content rounded-b-lg">
+                        <p class="font-semibold mb-2">In the client-server model, which device requests a service?</p>
+                        <textarea class="styled-textarea w-full p-2" rows="3" placeholder="Type your answer here..."></textarea>
+                        <div class="mt-2 flex items-center gap-2">
+                             <label class="import-btn text-sm">
+                                Import File
+                                <input type="file" class="hidden file-input">
+                            </label>
+                            <span class="file-name text-sm text-[var(--text-secondary)]"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="collapsible">
+                    <div class="collapsible-header p-4 rounded-t-lg flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">Exercise 5: Router Function</h3>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </div>
+                    <div class="collapsible-content rounded-b-lg">
+                        <p class="font-semibold mb-2">What is the primary function of a router?</p>
+                        <textarea class="styled-textarea w-full p-2" rows="3" placeholder="Type your answer here..."></textarea>
+                        <div class="mt-2 flex items-center gap-2">
+                             <label class="import-btn text-sm">
+                                Import File
+                                <input type="file" class="hidden file-input">
+                            </label>
+                            <span class="file-name text-sm text-[var(--text-secondary)]"></span>
+                        </div>
+                    </div>
+                </div>
+                 <div class="collapsible">
+                    <div class="collapsible-header p-4 rounded-t-lg flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">Exercise 6: WPAN Technology</h3>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </div>
+                    <div class="collapsible-content rounded-b-lg">
+                        <p class="font-semibold mb-2">What is the most common technology used for a Wireless Personal Area Network (WPAN)?</p>
+                        <textarea class="styled-textarea w-full p-2" rows="3" placeholder="Type your answer here..."></textarea>
+                         <div class="mt-2 flex items-center gap-2">
+                             <label class="import-btn text-sm">
+                                Import File
+                                <input type="file" class="hidden file-input">
+                            </label>
+                            <span class="file-name text-sm text-[var(--text-secondary)]"></span>
+                        </div>
+                    </div>
+                </div>
+                 <div class="collapsible">
+                    <div class="collapsible-header p-4 rounded-t-lg flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">Exercise 7: Firewall Function</h3>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </div>
+                    <div class="collapsible-content rounded-b-lg">
+                        <p class="font-semibold mb-2">What is the function of a firewall?</p>
+                        <textarea class="styled-textarea w-full p-2" rows="3" placeholder="Type your answer here..."></textarea>
+                         <div class="mt-2 flex items-center gap-2">
+                             <label class="import-btn text-sm">
+                                Import File
+                                <input type="file" class="hidden file-input">
+                            </label>
+                            <span class="file-name text-sm text-[var(--text-secondary)]"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tips Section -->
+        <section id="tips" class="main-content hidden">
+            <h2 class="text-3xl font-bold mb-6">Tips</h2>
+             <div class="space-y-4">
+                <div class="collapsible">
+                    <div class="collapsible-header p-4 rounded-t-lg flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">Tip for Question 1</h3>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </div>
+                    <div class="collapsible-content rounded-b-lg">
+                        <p>Recall the "map" analogy from Chapter 1. The name describes the layout or physical arrangement of the network.</p>
+                    </div>
+                </div>
+                <div class="collapsible">
+                    <div class="collapsible-header p-4 rounded-t-lg flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">Tip for Question 2</h3>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </div>
+                    <div class="collapsible-content rounded-b-lg">
+                        <p>This acronym refers to networks confined to a single physical location, like your home or a school.</p>
+                    </div>
+                </div>
+                <div class="collapsible">
+                    <div class="collapsible-header p-4 rounded-t-lg flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">Tip for Question 3</h3>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </div>
+                    <div class="collapsible-content rounded-b-lg">
+                        <p>Think about the "Who owns the Internet?" section. Is it a single company or a decentralized system?</p>
+                    </div>
+                </div>
+                <div class="collapsible">
+                    <div class="collapsible-header p-4 rounded-t-lg flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">Tip for Question 4</h3>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </div>
+                    <div class="collapsible-content rounded-b-lg">
+                        <p>Remember the restaurant example. Who is the customer making the request?</p>
+                    </div>
+                </div>
+                <div class="collapsible">
+                    <div class="collapsible-header p-4 rounded-t-lg flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">Tip for Question 5</h3>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </div>
+                    <div class="collapsible-content rounded-b-lg">
+                        <p>This device acts like the traffic police of the internet. What is its main job in directing traffic?</p>
+                    </div>
+                </div>
+                <div class="collapsible">
+                    <div class="collapsible-header p-4 rounded-t-lg flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">Tip for Question 6</h3>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </div>
+                    <div class="collapsible-content rounded-b-lg">
+                        <p>This technology is used for short-range connections, like pairing headphones to your phone.</p>
+                    </div>
+                </div>
+                <div class="collapsible">
+                    <div class="collapsible-header p-4 rounded-t-lg flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">Tip for Question 7</h3>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </div>
+                    <div class="collapsible-content rounded-b-lg">
+                       <p>Remember the bouncer at the private club analogy. What is this security feature protecting your network from?</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Explanations Section -->
+        <section id="explanations" class="main-content hidden">
+            <h2 class="text-3xl font-bold mb-6">Explanations</h2>
+             <div class="space-y-4">
+                <div class="collapsible">
+                    <div class="collapsible-header p-4 rounded-t-lg flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">Explanation for Question 1</h3>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </div>
+                    <div class="collapsible-content rounded-b-lg">
+                        <p>A <strong>topology</strong> is the term used to describe the physical or logical arrangement of devices in a network. The star topology, where devices connect to a central point, is the most common type for LANs.</p>
+                    </div>
+                </div>
+                 <div class="collapsible">
+                    <div class="collapsible-header p-4 rounded-t-lg flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">Explanation for Question 2</h3>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </div>
+                    <div class="collapsible-content rounded-b-lg">
+                        <p><strong>LAN</strong> stands for <strong>Local Area Network</strong>. It's a network that covers a small, localized area like an office, a school, or a home.</p>
+                    </div>
+                </div>
+                <div class="collapsible">
+                    <div class="collapsible-header p-4 rounded-t-lg flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">Explanation for Question 3</h3>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </div>
+                    <div class="collapsible-content rounded-b-lg">
+                         <p>No, the Internet is a <strong>decentralized network of networks</strong>. It has no single owner; instead, various organizations help to standardize and coordinate its operation globally.</p>
+                    </div>
+                </div>
+                <div class="collapsible">
+                    <div class="collapsible-header p-4 rounded-t-lg flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">Explanation for Question 4</h3>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </div>
+                    <div class="collapsible-content rounded-b-lg">
+                        <p>The <strong>client</strong> is the device that requests services or resources. The server is the device that provides, or "serves," them. Your web browser is a client requesting a webpage from a web server.</p>
+                    </div>
+                </div>
+                <div class="collapsible">
+                    <div class="collapsible-header p-4 rounded-t-lg flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">Explanation for Question 5</h3>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </div>
+                    <div class="collapsible-content rounded-b-lg">
+                        <p>A router's primary function is to <strong>connect different networks together</strong> and determine the best path for data to travel. Your home router connects your local home network (LAN) to the internet (a wide area network).</p>
+                    </div>
+                </div>
+                 <div class="collapsible">
+                    <div class="collapsible-header p-4 rounded-t-lg flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">Explanation for Question 6</h3>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </div>
+                    <div class="collapsible-content rounded-b-lg">
+                        <p><strong>Bluetooth</strong> is the most common technology for a WPAN (Wireless Personal Area Network). It is designed for low-power, short-range communication between devices like phones, headphones, and smartwatches.</p>
+                    </div>
+                </div>
+                <div class="collapsible">
+                    <div class="collapsible-header p-4 rounded-t-lg flex justify-between items-center">
+                        <h3 class="text-lg font-semibold">Explanation for Question 7</h3>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </div>
+                    <div class="collapsible-content rounded-b-lg">
+                       <p>A firewall acts as a security barrier, <strong>monitoring and controlling network traffic</strong> to block unauthorized or malicious connections from entering a trusted network from an untrusted one, like the internet.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Answers Section -->
+        <section id="answers" class="main-content hidden">
+            <h2 class="text-3xl font-bold mb-6">Answers</h2>
+            <div class="p-4 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)]">
+                <ul class="list-disc list-inside space-y-2">
+                    <li><strong>1:</strong> A topology.</li>
+                    <li><strong>2:</strong> Local Area Network.</li>
+                    <li><strong>3:</strong> No.</li>
+                    <li><strong>4:</strong> The client.</li>
+                    <li><strong>5:</strong> To connect different networks together and determine the best path for data.</li>
+                    <li><strong>6:</strong> Bluetooth.</li>
+                    <li><strong>7:</strong> To monitor and control incoming and outgoing network traffic to block malicious connections.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Evaluation Grid Section -->
+        <section id="evaluation" class="main-content hidden">
+            <h2 class="text-3xl font-bold mb-6">Evaluation Grid</h2>
+            <div class="overflow-x-auto">
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Question</th>
+                            <th>Points Possible</th>
+                            <th>Criteria for Full Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1. Network Topology</td>
+                            <td>10</td>
+                            <td>Correctly identifies the term "topology".</td>
+                        </tr>
+                        <tr>
+                            <td>2. LAN Acronym</td>
+                            <td>10</td>
+                            <td>Correctly spells out "Local Area Network".</td>
+                        </tr>
+                        <tr>
+                            <td>3. Internet Ownership</td>
+                            <td>10</td>
+                            <td>Correctly answers "No" and understands the concept of decentralization.</td>
+                        </tr>
+                        <tr>
+                            <td>4. Client Role</td>
+                            <td>10</td>
+                            <td>Correctly identifies the "client" as the requester.</td>
+                        </tr>
+                         <tr>
+                            <td>5. Router Function</td>
+                            <td>20</td>
+                            <td>Correctly identifies both connecting networks and path determination.</td>
+                        </tr>
+                        <tr>
+                            <td>6. WPAN Technology</td>
+                            <td>20</td>
+                            <td>Correctly identifies "Bluetooth".</td>
+                        </tr>
+                         <tr>
+                            <td>7. Firewall Function</td>
+                            <td>20</td>
+                            <td>Correctly describes the function of monitoring traffic and blocking threats.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+    
+    <!-- Password Modal -->
+    <div id="password-modal" class="modal-overlay hidden">
+        <div class="modal-content shadow-2xl">
+            <h3 class="text-xl font-bold mb-2 text-[var(--text-accent)]">Password Required</h3>
+            <p class="text-sm text-[var(--text-secondary)] mb-1">Please enter the password to view the answers.</p>
+            <p class="text-sm text-[var(--text-secondary)] mb-1">If you want to Cancel the action, click outside the "Password Required" box.</p>
+            <p class="text-sm text-[var(--text-secondary)] mb-4">You can see the entered password by clicking on the "eye" icon.</p>
+            
+            <div class="relative">
+                 <input type="password" id="password-input" class="styled-input w-full p-2 pr-10" placeholder="Enter password...">
+                 <button id="toggle-password" type="button" class="absolute inset-y-0 right-0 px-3 flex items-center text-[var(--text-secondary)]">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z" /><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" /></svg>
+                 </button>
+            </div>
+           
+            <p id="password-error" class="text-red-500 text-sm mt-2 hidden">Incorrect password. Please try again.</p>
+            <button id="submit-password" class="w-full mt-4 import-btn font-semibold">Unlock Answers</button>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Theme Toggling ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const lightIcon = document.getElementById('theme-icon-light');
+            const darkIcon = document.getElementById('theme-icon-dark');
+
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                lightIcon.classList.add('hidden');
+                darkIcon.classList.remove('hidden');
+            }
+
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                lightIcon.classList.toggle('hidden');
+                darkIcon.classList.toggle('hidden');
+                if (document.body.classList.contains('dark-mode')) {
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    localStorage.removeItem('theme');
+                }
+            });
+            
+            // --- Navigation ---
+            const navLinks = document.querySelectorAll('.nav-link');
+            const mainContents = document.querySelectorAll('.main-content');
+            const answersLink = document.querySelector('a[href="#answers"]');
+            
+            const switchTab = (hash) => {
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.hash === hash);
+                });
+                mainContents.forEach(content => {
+                    content.classList.toggle('hidden', content.id !== hash.substring(1));
+                });
+            };
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    // Prevent default anchor behavior for all but the password protected one
+                    if (this.hash !== '#answers') {
+                        e.preventDefault();
+                        switchTab(this.hash);
+                    }
+                });
+            });
+            
+            // --- Collapsible Sections ---
+            const collapsibles = document.querySelectorAll('.collapsible-header');
+            collapsibles.forEach(header => {
+                header.addEventListener('click', function () {
+                    const content = this.nextElementSibling;
+                    content.classList.toggle('expanded');
+                    this.querySelector('span').classList.toggle('rotate-180');
+                });
+            });
+
+            document.getElementById('expandAll').addEventListener('click', () => {
+                document.querySelectorAll('.collapsible-content').forEach(content => {
+                    content.classList.add('expanded');
+                    content.previousElementSibling.querySelector('span').classList.add('rotate-180');
+                });
+            });
+
+            document.getElementById('collapseAll').addEventListener('click', () => {
+                document.querySelectorAll('.collapsible-content').forEach(content => {
+                    content.classList.remove('expanded');
+                     content.previousElementSibling.querySelector('span').classList.remove('rotate-180');
+                });
+            });
+            
+            // --- Password Protection ---
+            const passwordModal = document.getElementById('password-modal');
+            const passwordInput = document.getElementById('password-input');
+            const submitPassword = document.getElementById('submit-password');
+            const passwordError = document.getElementById('password-error');
+            const togglePassword = document.getElementById('toggle-password');
+
+            let answersUnlocked = sessionStorage.getItem('answersUnlocked') === 'true';
+
+            answersLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (answersUnlocked) {
+                    switchTab('#answers');
+                } else {
+                    passwordModal.classList.remove('hidden');
+                    passwordInput.focus();
+                }
+            });
+            
+            submitPassword.addEventListener('click', checkPassword);
+            passwordInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    checkPassword();
+                }
+            });
+            
+            function checkPassword() {
+                 if (passwordInput.value === 'student2025') {
+                    answersUnlocked = true;
+                    sessionStorage.setItem('answersUnlocked', 'true');
+                    passwordModal.classList.add('hidden');
+                    passwordError.classList.add('hidden');
+                    passwordInput.value = '';
+                    switchTab('#answers');
+                } else {
+                    passwordError.classList.remove('hidden');
+                }
+            }
+
+            passwordModal.addEventListener('click', function(e) {
+                if (e.target === passwordModal) {
+                    passwordModal.classList.add('hidden');
+                    passwordError.classList.add('hidden');
+                }
+            });
+            
+            togglePassword.addEventListener('click', () => {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+            });
+
+            // --- File Import Handling ---
+            const fileInputs = document.querySelectorAll('.file-input');
+            fileInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    const fileNameDisplay = this.closest('.flex').querySelector('.file-name');
+                    if (this.files.length > 0) {
+                        fileNameDisplay.textContent = `File: ${this.files[0].name}`;
+                    } else {
+                        fileNameDisplay.textContent = '';
+                    }
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>
+
