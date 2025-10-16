@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Introduction to Computer Networks</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
     <style>
         /* Solarized Light Theme */
         :root {
@@ -146,6 +147,12 @@
             box-shadow: 0 0 0 2px rgba(38, 139, 210, 0.3);
         }
         
+        div[contenteditable=true]:empty:before {
+            content: attr(data-placeholder);
+            color: var(--text-secondary);
+            opacity: 0.6;
+        }
+
         .styled-table {
             width: 100%;
             border-collapse: collapse;
@@ -361,21 +368,24 @@
                                 <h4 class="font-bold mb-2">How a Firewall Works</h4>
                                 <svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg" aria-labelledby="fw-title">
                                     <title id="fw-title">Firewall Diagram</title>
-                                    <text x="45" y="20" font-size="12" fill="var(--text-primary)" text-anchor="middle">Internet (Untrusted)</text>
-                                    <text x="250" y="20" font-size="12" fill="var(--text-primary)" text-anchor="middle">Your Network (Trusted)</text>
+                                    <text x="75" y="20" font-size="12" fill="var(--text-primary)" text-anchor="middle">Internet (Untrusted)</text>
+                                    <text x="290" y="20" font-size="12" fill="var(--text-primary)" text-anchor="end">Your Network (Trusted)</text>
                                     
                                     <!-- Malicious Traffic -->
                                     <path d="M 20 50 H 120" stroke="#dc322f" stroke-width="2" marker-end="url(#arrow-red)"/>
                                     <text x="70" y="45" font-size="10" fill="#dc322f" text-anchor="middle">Malicious</text>
-                                    <text x="148" y="55" font-size="20" fill="#dc322f">✕</text>
+                                    <!-- Block Symbol (Cross) -->
+                                    <line x1="125" y1="45" x2="135" y2="55" stroke="#dc322f" stroke-width="3" stroke-linecap="round"/>
+                                    <line x1="135" y1="45" x2="125" y2="55" stroke="#dc322f" stroke-width="3" stroke-linecap="round"/>
                                     
                                     <!-- Safe Traffic -->
                                     <path d="M 20 100 H 280" stroke="#859900" stroke-width="2" marker-end="url(#arrow-green)"/>
                                     <text x="70" y="95" font-size="10" fill="#859900" text-anchor="middle">Safe</text>
-                                     <text x="148" y="105" font-size="20" fill="#859900">✔</text>
+                                    <!-- Allow Symbol (Checkmark) -->
+                                    <path d="M128 97 l 4 4 l 8 -8" stroke="#859900" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
                                     
                                     <!-- Firewall Wall -->
-                                    <rect x="140" y="30" width="15" height="100" fill="#b58900"/>
+                                    <rect x="140" y="30" width="15" height="100" fill="#b58900" opacity="0.8"/>
                                     <path d="M 140 40 H 155 M 140 50 H 155 M 140 60 H 155 M 140 70 H 155 M 140 80 H 155 M 140 90 H 155 M 140 100 H 155 M 140 110 H 155 M 140 120 H 155" stroke="#002b36" stroke-width="1"/>
                                     <text x="147.5" y="80" font-size="10" fill="white" text-anchor="middle" transform="rotate(-90 147.5 80)">FIREWALL</text>
                                     
@@ -403,11 +413,11 @@
                     </div>
                     <div class="collapsible-content rounded-b-lg">
                         <p class="font-semibold mb-2">What is the arrangement or "map" of devices in a network called?</p>
-                        <textarea class="styled-textarea w-full p-2" rows="3" placeholder="Type your answer here..."></textarea>
+                        <div contenteditable="true" class="styled-textarea w-full p-2 min-h-[7rem]" data-placeholder="Type or import your answer here..."></div>
                         <div class="mt-2 flex items-center gap-2">
                              <label class="import-btn text-sm">
-                                Import File
-                                <input type="file" class="hidden file-input">
+                                Import Content
+                                <input type="file" class="hidden file-input" accept=".txt,.md,.docx,image/*">
                             </label>
                             <span class="file-name text-sm text-[var(--text-secondary)]"></span>
                         </div>
@@ -420,11 +430,11 @@
                     </div>
                     <div class="collapsible-content rounded-b-lg">
                         <p class="font-semibold mb-2">What does the acronym LAN stand for?</p>
-                        <textarea class="styled-textarea w-full p-2" rows="3" placeholder="Type your answer here..."></textarea>
+                        <div contenteditable="true" class="styled-textarea w-full p-2 min-h-[7rem]" data-placeholder="Type or import your answer here..."></div>
                          <div class="mt-2 flex items-center gap-2">
                              <label class="import-btn text-sm">
-                                Import File
-                                <input type="file" class="hidden file-input">
+                                Import Content
+                                <input type="file" class="hidden file-input" accept=".txt,.md,.docx,image/*">
                             </label>
                             <span class="file-name text-sm text-[var(--text-secondary)]"></span>
                         </div>
@@ -437,11 +447,11 @@
                     </div>
                     <div class="collapsible-content rounded-b-lg">
                         <p class="font-semibold mb-2">Is the Internet owned by a single global corporation? (Yes/No)</p>
-                        <textarea class="styled-textarea w-full p-2" rows="3" placeholder="Type your answer here..."></textarea>
+                        <div contenteditable="true" class="styled-textarea w-full p-2 min-h-[7rem]" data-placeholder="Type or import your answer here..."></div>
                         <div class="mt-2 flex items-center gap-2">
                              <label class="import-btn text-sm">
-                                Import File
-                                <input type="file" class="hidden file-input">
+                                Import Content
+                                <input type="file" class="hidden file-input" accept=".txt,.md,.docx,image/*">
                             </label>
                             <span class="file-name text-sm text-[var(--text-secondary)]"></span>
                         </div>
@@ -454,11 +464,11 @@
                     </div>
                     <div class="collapsible-content rounded-b-lg">
                         <p class="font-semibold mb-2">In the client-server model, which device requests a service?</p>
-                        <textarea class="styled-textarea w-full p-2" rows="3" placeholder="Type your answer here..."></textarea>
+                        <div contenteditable="true" class="styled-textarea w-full p-2 min-h-[7rem]" data-placeholder="Type or import your answer here..."></div>
                         <div class="mt-2 flex items-center gap-2">
                              <label class="import-btn text-sm">
-                                Import File
-                                <input type="file" class="hidden file-input">
+                                Import Content
+                                <input type="file" class="hidden file-input" accept=".txt,.md,.docx,image/*">
                             </label>
                             <span class="file-name text-sm text-[var(--text-secondary)]"></span>
                         </div>
@@ -471,11 +481,11 @@
                     </div>
                     <div class="collapsible-content rounded-b-lg">
                         <p class="font-semibold mb-2">What is the primary function of a router?</p>
-                        <textarea class="styled-textarea w-full p-2" rows="3" placeholder="Type your answer here..."></textarea>
+                        <div contenteditable="true" class="styled-textarea w-full p-2 min-h-[7rem]" data-placeholder="Type or import your answer here..."></div>
                         <div class="mt-2 flex items-center gap-2">
                              <label class="import-btn text-sm">
-                                Import File
-                                <input type="file" class="hidden file-input">
+                                Import Content
+                                <input type="file" class="hidden file-input" accept=".txt,.md,.docx,image/*">
                             </label>
                             <span class="file-name text-sm text-[var(--text-secondary)]"></span>
                         </div>
@@ -488,11 +498,11 @@
                     </div>
                     <div class="collapsible-content rounded-b-lg">
                         <p class="font-semibold mb-2">What is the most common technology used for a Wireless Personal Area Network (WPAN)?</p>
-                        <textarea class="styled-textarea w-full p-2" rows="3" placeholder="Type your answer here..."></textarea>
+                        <div contenteditable="true" class="styled-textarea w-full p-2 min-h-[7rem]" data-placeholder="Type or import your answer here..."></div>
                          <div class="mt-2 flex items-center gap-2">
                              <label class="import-btn text-sm">
-                                Import File
-                                <input type="file" class="hidden file-input">
+                                Import Content
+                                <input type="file" class="hidden file-input" accept=".txt,.md,.docx,image/*">
                             </label>
                             <span class="file-name text-sm text-[var(--text-secondary)]"></span>
                         </div>
@@ -505,15 +515,42 @@
                     </div>
                     <div class="collapsible-content rounded-b-lg">
                         <p class="font-semibold mb-2">What is the function of a firewall?</p>
-                        <textarea class="styled-textarea w-full p-2" rows="3" placeholder="Type your answer here..."></textarea>
+                        <div contenteditable="true" class="styled-textarea w-full p-2 min-h-[7rem]" data-placeholder="Type or import your answer here..."></div>
                          <div class="mt-2 flex items-center gap-2">
                              <label class="import-btn text-sm">
-                                Import File
-                                <input type="file" class="hidden file-input">
+                                Import Content
+                                <input type="file" class="hidden file-input" accept=".txt,.md,.docx,image/*">
                             </label>
                             <span class="file-name text-sm text-[var(--text-secondary)]"></span>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Submit Your Work Section -->
+            <div id="submit-section" class="mt-12 p-6 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)]">
+                <h3 class="text-2xl font-bold mb-4">Submit Your Work</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="studentName" class="block text-sm font-semibold mb-1">Your Name:</label>
+                        <input type="text" id="studentName" class="styled-input w-full p-2" placeholder="Enter your full name">
+                    </div>
+                    <div>
+                        <label for="studentId" class="block text-sm font-semibold mb-1">Student ID:</label>
+                        <input type="text" id="studentId" class="styled-input w-full p-2" placeholder="Enter your student ID">
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-4 mb-6">
+                    <a id="sendEmailBtn" class="import-btn font-semibold" href="#">Send Answers via Email</a>
+                    <button id="copyAndDownloadBtn" class="import-btn font-semibold">Copy & Download Answers (.html)</button>
+                </div>
+                 <div id="feedback-message" class="font-semibold mb-4 text-[var(--link-color)]"></div>
+
+                <div class="p-4 rounded-lg bg-[var(--bg-primary)] border border-[var(--border-color)] text-sm">
+                    <h4 class="font-bold mb-2">How to Submit:</h4>
+                    <p class="mb-2"><strong>1. Copy & Download (Recommended):</strong> Click the "Copy & Download Answers (.html)" button. This copies your rich content answers to the clipboard and starts a download for a `student_answers.html` file. <strong>Please attach this HTML file to an email to your teacher.</strong></p>
+                    <p class="mb-2"><strong>2. Send via Email:</strong> This button will attempt to open your email client with a plain-text version of your answers. Note that this method will not preserve images or complex formatting.</p>
+                    <p><strong>If you need to send rich content:</strong> ALWAYS use the "Copy & Download" button and attach the downloaded `.html` file to a new email addressed to <strong class="text-[var(--text-accent)]">asengroa@hotmail.com</strong>.</p>
                 </div>
             </div>
         </section>
@@ -790,7 +827,6 @@
 
             navLinks.forEach(link => {
                 link.addEventListener('click', function (e) {
-                    // Prevent default anchor behavior for all but the password protected one
                     if (this.hash !== '#answers') {
                         e.preventDefault();
                         switchTab(this.hash);
@@ -843,9 +879,7 @@
             
             submitPassword.addEventListener('click', checkPassword);
             passwordInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    checkPassword();
-                }
+                if (e.key === 'Enter') checkPassword();
             });
             
             function checkPassword() {
@@ -877,13 +911,152 @@
             const fileInputs = document.querySelectorAll('.file-input');
             fileInputs.forEach(input => {
                 input.addEventListener('change', function() {
+                    const file = this.files[0];
+                    const answerBox = this.closest('.collapsible-content').querySelector('div[contenteditable="true"]');
                     const fileNameDisplay = this.closest('.flex').querySelector('.file-name');
-                    if (this.files.length > 0) {
-                        fileNameDisplay.textContent = `File: ${this.files[0].name}`;
-                    } else {
+
+                    if (!file) {
                         fileNameDisplay.textContent = '';
+                        return;
                     }
+
+                    fileNameDisplay.textContent = `Importing: ${file.name}`;
+                    const reader = new FileReader();
+
+                    if (file.type.startsWith('image/')) {
+                        reader.onload = function(e) {
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.style.maxWidth = '90%';
+                            img.style.maxHeight = '300px';
+                            img.style.borderRadius = '0.5rem';
+                            img.style.margin = '0.5rem 0';
+                            answerBox.appendChild(img);
+                            fileNameDisplay.textContent = `✓ Imported ${file.name}`;
+                        };
+                        reader.readAsDataURL(file);
+                    } else if (file.name.endsWith('.docx')) {
+                        reader.onload = function(e) {
+                            mammoth.convertToHtml({ arrayBuffer: e.target.result })
+                                .then(result => {
+                                    const tempDiv = document.createElement('div');
+                                    tempDiv.innerHTML = result.value;
+                                    tempDiv.querySelectorAll('p:empty').forEach(p => p.remove());
+                                    answerBox.innerHTML += tempDiv.innerHTML;
+                                    fileNameDisplay.textContent = `✓ Imported ${file.name}`;
+                                })
+                                .catch(err => {
+                                    console.error("DOCX conversion error:", err);
+                                    answerBox.innerText += `\n[Error importing ${file.name}]`;
+                                    fileNameDisplay.textContent = `✗ Error with ${file.name}`;
+                                });
+                        };
+                        reader.readAsArrayBuffer(file);
+                    } else if (file.type.startsWith('text/')) {
+                        reader.onload = function(e) {
+                            const pre = document.createElement('pre');
+                            pre.textContent = e.target.result;
+                            pre.style.whiteSpace = 'pre-wrap';
+                            pre.style.backgroundColor = 'var(--bg-primary)';
+                            pre.style.padding = '0.5rem';
+                            pre.style.borderRadius = '0.25rem';
+                            answerBox.appendChild(pre);
+                            fileNameDisplay.textContent = `✓ Imported ${file.name}`;
+                        };
+                        reader.readAsText(file);
+                    } else {
+                        answerBox.innerText += `\n[File imported: ${file.name} - content preview not available for this file type]`;
+                        fileNameDisplay.textContent = `? Imported ${file.name} (no preview)`;
+                    }
+                    this.value = '';
                 });
+            });
+
+            // --- Submit Work Logic ---
+            const sendEmailBtn = document.getElementById('sendEmailBtn');
+            const copyAndDownloadBtn = document.getElementById('copyAndDownloadBtn');
+            const studentNameInput = document.getElementById('studentName');
+            const studentIdInput = document.getElementById('studentId');
+            const feedbackMessage = document.getElementById('feedback-message');
+
+            function gatherAnswers(asHtmlString = false) {
+                const name = studentNameInput.value || 'N/A';
+                const id = studentIdInput.value || 'N/A';
+                
+                if (asHtmlString) {
+                    let htmlContent = `
+                        <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Student Answers</title>
+                        <style>
+                            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; padding: 20px; color: #333; }
+                            .answer-block { border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 20px; background-color: #f9f9f9; }
+                            h1, h2 { color: #111; } h1 { border-bottom: 2px solid #eee; padding-bottom: 10px; }
+                            img { max-width: 100%; height: auto; border-radius: 4px; }
+                            pre { white-space: pre-wrap; background-color: #eee; padding: 10px; border-radius: 4px; font-family: monospace; }
+                            table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+                        </style></head><body>
+                        <h1>Student Submission</h1><p><strong>Name:</strong> ${name}</p><p><strong>ID:</strong> ${id}</p><hr>`;
+                    
+                    document.querySelectorAll('#exercises .collapsible').forEach((block, index) => {
+                        const question = block.querySelector('.font-semibold.mb-2').textContent.trim();
+                        const answerHtml = block.querySelector('div[contenteditable="true"]').innerHTML.trim() || '<p><em>[No answer provided]</em></p>';
+                        htmlContent += `<div class="answer-block"><h2>Question ${index + 1}: ${question}</h2><div>${answerHtml}</div></div>`;
+                    });
+                    
+                    htmlContent += `</body></html>`;
+                    return htmlContent;
+
+                } else { // Plain text for email body
+                    let content = `Student Name: ${name}\nStudent ID: ${id}\n\n--- ANSWERS ---\n\n`;
+                    document.querySelectorAll('#exercises .collapsible').forEach((block, index) => {
+                        const question = block.querySelector('.font-semibold.mb-2').textContent.trim();
+                        const answer = block.querySelector('div[contenteditable="true"]').innerText.trim() || '[No answer provided]';
+                        content += `Question ${index + 1}: ${question}\nAnswer:\n${answer}\n\n--------------------------------\n\n`;
+                    });
+                    return content;
+                }
+            }
+
+            sendEmailBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const name = studentNameInput.value || 'Anonymous Student';
+                const subject = encodeURIComponent(`Network Course Submission from ${name}`);
+                const body = encodeURIComponent(gatherAnswers(false));
+                const mailtoLink = `mailto:asengroa@hotmail.com?subject=${subject}&body=${body}`;
+                if (mailtoLink.length > 2000) {
+                    alert("Your answers are too long to send directly via this link. Please use the 'Copy & Download' button and attach the downloaded HTML file to a new email.");
+                } else {
+                    window.location.href = mailtoLink;
+                }
+            });
+
+            copyAndDownloadBtn.addEventListener('click', function() {
+                const answersHtml = gatherAnswers(true);
+                
+                try {
+                    const blob = new Blob([answersHtml], { type: 'text/html' });
+                    const clipboardItem = new ClipboardItem({ 'text/html': blob });
+                    navigator.clipboard.write([clipboardItem]).then(() => {
+                        feedbackMessage.textContent = 'Rich content copied to clipboard & download started!';
+                        setTimeout(() => { feedbackMessage.textContent = ''; }, 4000);
+                    }).catch(err => {
+                        feedbackMessage.textContent = 'Could not copy rich content. Download will still start.';
+                        setTimeout(() => { feedbackMessage.textContent = ''; }, 4000);
+                        console.error('Failed to copy rich text: ', err);
+                    });
+                } catch (e) {
+                    navigator.clipboard.writeText(answersHtml);
+                    console.warn('ClipboardItem not supported, copying as plain HTML source.');
+                }
+                
+                const fileBlob = new Blob([answersHtml], { type: 'text/html' });
+                const url = URL.createObjectURL(fileBlob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'student_answers.html';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
             });
 
         });
